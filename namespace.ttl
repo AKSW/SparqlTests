@@ -96,61 +96,6 @@ st:assertNotEmpty a owl:DatatypeProperty;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-st:assertEquals a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:comment "The equals assertion is true if the SPARQL result is equal to the assertion value." ;
-  rdfs:label "assert =" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
-st:assertGreaterThan a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:comment "The greaterThan assertion is true if the SPARQL result is greater than the assertion value." ;
-  rdfs:label "assert >" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
-st:assertGreaterThanOrEqual a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:comment "The greaterThanOrEqual assertion is true if the SPARQL result is greater than or equal the assertion value." ;
-  rdfs:label "assert >=" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
-st:assertLessThan a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:comment "The lessThan assertion is true if the SPARQL result is less than the assertion value." ;
-  rdfs:label "assert <" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
-st:assertLessThanOrEqual a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:comment "The lessThanOrEqual assertion is true if the SPARQL result is less than or equal the assertion value." ;
-  rdfs:label "assert <=" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
-st:assertEqualXMLStructure a owl:DatatypeProperty;
-  rdfs:domain st:Test ;
-  rdfs:range rdf:XMLLiteral;
-  rdfs:comment "The equalXMLStructure assertion is true if the resulting XML (based on the SPARQL Query Results XML Format) is equal to the assertion value." ;
-  rdfs:label "assert XMLStructure" ;
-  dcterms:issued "2013-10-23"^^xsd:date ;
-  dcterms:modified "2013-10-24"^^xsd:date ;
-  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-  .
-
 ###
 # Example
 ###
