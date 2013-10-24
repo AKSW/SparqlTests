@@ -20,7 +20,7 @@
   foaf:homepage <http://aksw.org/Projects/SparqlTests> ;
   #vann:changes <...> ;
   rdfs:label "SPARQL Tests Description Vocabulary" ;
-  dcterms:description "This is a simple and lightweight approach to provide a SPARQL query centered data test description framwork. " ;
+  dcterms:description "This is a simple and lightweight approach to provide a SPARQL query centered data test description framework." ;
   dcterms:issued "2013-10-23"^^xsd:date ;
   dcterms:modified "2013-10-24"^^xsd:date ;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
