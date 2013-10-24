@@ -1,36 +1,51 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-
-@prefix dcterms: <http://purl.org/dc/terms/>.
-@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
-@prefix foaf: <http://xmlns.com/foaf/0.1/>.
-@prefix doap: <http://usefulinc.com/ns/doap#>.
-
-@prefix vann: <http://purl.org/vocab/vann/>.
-
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
 @prefix st: <http://purl.org/net/sparqltests/> .
 @prefix ste: <http://purl.org/net/sparqltests/examples/> .
 
+###
+# Vocabulary description and documentation
+###
+
+<http://purl.org/net/sparqltests/> a owl:Ontology ;
+  foaf:maker <http://sebastian.tramp.name> ;
+  doap:maintainer <http://sebastian.tramp.name> ;
+  vann:preferredNamespacePrefix "st" ;
+  vann:preferredNamespaceUri "http://purl.org/net/sparqltest/" ;
+  foaf:homepage <http://aksw.org/Projects/SparqlTests> ;
+  #vann:changes <...> ;
+  rdfs:label "SPARQL Tests Description Vocabulary" ;
+  dcterms:description "This is a simple and lightweight approach to provide a SPARQL query centered data test description framwork. " ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
 
 ###
 # classes
 ###
 
-st:Test a owl:Class;
-  rdfs:comment "A test description consists of a query string or a link to a query resource as well as an assertion. Optionally, success and fail messages can be added too." ;
-  rdfs:label "SPARQL Query Test";
+st:Test a owl:Class ;
+  rdfs:comment "A test description consists of a query string as well as an result assertion. Optionally, success, fail and skip messages can be added." ;
+  rdfs:label "SPARQL Test" ;
   dcterms:issued "2013-10-24"^^xsd:date ;
   dcterms:modified "2013-10-24"^^xsd:date ;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  vann:example ste:TestFoafPerson, ste:TestFoafPersonMissingValues, ste:TestMissingPropertyDescription,
+    ste:TestMissingClassDescription, ste:TestMissingTranslation, ste:TestMoreThanOneLabel,
+    ste:TestMoreThanOneLabel, ste:TestType, ste:TestValueMarkup, ste:TestWrongObjectPropertyValues ;
   .
 
 ###
 # properties
 ###
 
-st:queryString a owl:DatatypeProperty;
+st:queryString a owl:DatatypeProperty ;
   rdfs:comment "The string representation of the SPARQL query to executed for the test." ;
   rdfs:domain st:Test ;
   rdfs:label "query string" ;
@@ -39,8 +54,8 @@ st:queryString a owl:DatatypeProperty;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-st:successMessage a owl:DatatypeProperty;
-  rdfs:comment "This message is used in the output or report if the query results fulfills the assertion." ;
+st:successMessage a owl:DatatypeProperty ;
+  rdfs:comment "This message is used in the output or report if the test successes." ;
   rdfs:domain st:Test ;
   rdfs:label "success message" ;
   dcterms:issued "2013-10-23"^^xsd:date ;
@@ -48,8 +63,8 @@ st:successMessage a owl:DatatypeProperty;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-st:failMessage a owl:DatatypeProperty;
-  rdfs:comment "This message is used in the output or report if the query result fulfills NOT the assertion." ;
+st:failMessage a owl:DatatypeProperty ;
+  rdfs:comment "This message is used in the output or report if the test fails." ;
   rdfs:domain st:Test ;
   rdfs:label "fail message" ;
   dcterms:issued "2013-10-23"^^xsd:date ;
@@ -58,7 +73,7 @@ st:failMessage a owl:DatatypeProperty;
   .
 
 st:skipMessage a owl:DatatypeProperty;
-  rdfs:comment "This message is used in the output or report if the test is skipped because of a failed dependency." ;
+  rdfs:comment "This message is used in the output or report if the test was skipped because of a failed dependency." ;
   rdfs:domain st:Test ;
   rdfs:label "fail message" ;
   dcterms:issued "2013-10-23"^^xsd:date ;
@@ -99,10 +114,48 @@ st:assertNotEmpty a owl:DatatypeProperty;
 ###
 # Example
 ###
+ste:TestMissingClassDescription a st:Test;
+  rdfs:label "test for missing class descriptions of used classes" ;
+  st:queryString """
+SELECT DISTINCT ?class {
+  ?subject a ?class .
+  OPTIONAL { ?class ?classProperty ?classValue . }
+  FILTER ( !bound(?classValue) )
+} LIMIT 1
+""" ;
+  st:assertEmpty true ;
+  st:failMessage "Some classes are used but do not have a description." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
 
-ste:ExampleTestType a st:Test;
+ste:TestMissingPropertyDescription a st:Test;
+  rdfs:label "test for missing property descriptions of used properties" ;
+  st:queryString """
+SELECT DISTINCT ?property {
+  ?subject ?property ?value .
+  OPTIONAL { ?property ?propertyProperty ?propertyValue . }
+  FILTER ( !bound(?propertyValue) )
+} LIMIT 1
+""" ;
+  st:assertEmpty true ;
+  st:failMessage "Some properties are used but do not have a description." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+
+ste:TestType a st:Test;
   rdfs:label "test for resources without rdf:type" ;
-  st:queryString """SELECT ?s { ?s ?p ?o . OPTIONAL { ?s a ?type . } FILTER ( !bound(?type) ) . } LIMIT 1""" ;
+  st:queryString """
+SELECT ?s {
+  ?s ?p ?o .
+  OPTIONAL { ?s a ?type . }
+  FILTER ( !bound(?type) ) .
+} LIMIT 1
+""" ;
   st:assertEmpty true ;
   st:failMessage "Some resources do not have an explizit rdf:type statement." ;
   dcterms:issued "2013-10-24"^^xsd:date ;
@@ -110,9 +163,14 @@ ste:ExampleTestType a st:Test;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-ste:ExampleTestMoreThanOneLable a st:Test;
-  rdfs:label "test for resources with more than one rdf:label" ;
-  st:queryString """SELECT ?s count(?label) { ?s rdfs:label ?label . } GROUP BY ?s HAVING (count(?label) > 1) LIMIT 1""";
+ste:TestMoreThanOneLabel a st:Test;
+  rdfs:label "test for resources with more than one rdf:label value" ;
+  st:queryString """
+SELECT ?s count(?label) {
+  ?s rdfs:label ?label .
+} GROUP BY ?s HAVING (count(?label) > 1)
+LIMIT 1
+""";
   st:assertEmpty true ;
   st:failMessage "At least one resource has more than one rdfs:label values." ;
   dcterms:issued "2013-10-24"^^xsd:date ;
@@ -120,12 +178,18 @@ ste:ExampleTestMoreThanOneLable a st:Test;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-ste:ExampleTestMissingTranslation a st:Test;
+ste:TestMissingTranslation a st:Test;
   rdfs:label "test for missing german translation of english values" ;
   st:queryString """
-SELECT ?valueen { ?s ?p ?valueen . FILTER ( lang(?valueen) = "en" )
-OPTIONAL { ?s ?p ?valuede . FILTER ( lang(?valuede) = "de" ) }
-FILTER ( !bound(?valuede) ) } LIMIT 1
+SELECT ?subject ?property ?valueen {
+  ?subject ?property ?valueen .
+  FILTER ( lang(?valueen) = "en" )
+  OPTIONAL {
+    ?subject ?property ?valuede .
+    FILTER ( lang(?valuede) = "de" )
+  }
+  FILTER ( !bound(?valuede) )
+} LIMIT 1
 """;
   st:assertEmpty true ;
   st:failMessage "At least one english literal has no german translation." ;
@@ -134,9 +198,15 @@ FILTER ( !bound(?valuede) ) } LIMIT 1
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
-ste:ExampleTestValueMarkup a st:Test;
+ste:TestValueMarkup a st:Test;
   rdfs:label "test for html tags in all literal values" ;
-  st:queryString """SELECT ?markup { ?s ?property ?markup . FILTER isLiteral(?markup) . FILTER regex( ?markup, "<[a-z /]+>") . } LIMIT 1""";
+  st:queryString """
+SELECT ?s ?property ?markup {
+  ?s ?property ?markup .
+  FILTER isLiteral(?markup) .
+  FILTER regex( ?markup, "<[a-z /]+>") .
+} LIMIT 1
+""";
   st:assertEmpty true ;
   st:failMessage "At least one literal value uses HTML markup." ;
   dcterms:issued "2013-10-24"^^xsd:date ;
@@ -144,25 +214,64 @@ ste:ExampleTestValueMarkup a st:Test;
   rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
   .
 
+ste:TestFoafPerson a st:Test;
+  rdfs:label "dependency test for foaf:Person tests" ;
+  st:queryString """
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT ?person {
+  ?person a foaf:Person
+} LIMIT 1
+""";
+  st:assertNotEmpty true ;
+  st:successMessage "Found foaf:Person resources." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+ste:TestFoafPersonMissingValues a st:Test ;
+  rdfs:label "tests foaf:Person resources for specific attributes" ;
+  st:depends ste:TestFoafPerson ;
+  st:queryString """
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT * {
+  ?person a foaf:Person .
+  OPTIONAL { ?person foaf:firstName ?firstName }
+  OPTIONAL { ?person foaf:lastName ?lastName }
+  OPTIONAL { ?person foaf:depiction ?depiction }
+  FILTER (
+    !bound(?firstName) ||
+    !bound(?lastName) ||
+    !bound(?depiction)
+  )
+} LIMIT 1
+""" ;
+  st:assertEmpty true ;
+  st:failMessage "foaf:Person resources need at least firstName, lastName and depiction" ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+ste:TestWrongObjectPropertyValues a st:Test ;
+  rdfs:label "tests of wrong" ;
+  st:queryString """
+SELECT * {
+  ?property a owl:ObjectProperty .
+  ?subject ?property ?value.
+  FILTER (!isUri(?value))
+} LIMIT 1
+""" ;
+  st:assertEmpty true ;
+  st:failMessage "Some values of owl:ObjectProperties are not resources (but Literals)" ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
 
 
 ###
-# Vocabulary description and documentation
+# misc resources
 ###
-
-<http://purl.org/net/sparqltests/> a owl:Ontology;
-    foaf:maker <http://sebastian.tramp.name>;
-    doap:maintainer <http://sebastian.tramp.name>;
-    vann:preferredNamespacePrefix "st";
-    vann:preferredNamespaceUri "http://purl.org/net/sparqltest/";
-    foaf:homepage <http://aksw.org/Projects/SparqlTests>;
-    #vann:example <...>;
-    #vann:changes <...>;
-    rdfs:label "SPARQL Tests Description Vocabulary";
-    dcterms:description "This is a simple and lightweight approach to provide a SPARQL query centered data test description framwork. ";
-    dcterms:issued "2013-10-23"^^xsd:date ;
-    dcterms:modified "2013-10-24"^^xsd:date ;
-    rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
-    .
 
 <http://sebastian.tramp.name> a foaf:Person; foaf:name "Sebastian Tramp".
