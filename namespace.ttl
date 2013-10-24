@@ -1,0 +1,223 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+
+@prefix vann: <http://purl.org/vocab/vann/>.
+
+@prefix st: <http://purl.org/net/sparqltests/> .
+@prefix ste: <http://purl.org/net/sparqltests/examples/> .
+
+
+###
+# classes
+###
+
+st:Test a owl:Class;
+  rdfs:comment "A test description consists of a query string or a link to a query resource as well as an assertion. Optionally, success and fail messages can be added too." ;
+  rdfs:label "SPARQL Query Test";
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+###
+# properties
+###
+
+st:queryString a owl:DatatypeProperty;
+  rdfs:comment "The string representation of the SPARQL query to executed for the test." ;
+  rdfs:domain st:Test ;
+  rdfs:label "query string" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:successMessage a owl:DatatypeProperty;
+  rdfs:comment "This message is used in the output or report if the query results fulfills the assertion." ;
+  rdfs:domain st:Test ;
+  rdfs:label "success message" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:failMessage a owl:DatatypeProperty;
+  rdfs:comment "This message is used in the output or report if the query result fulfills NOT the assertion." ;
+  rdfs:domain st:Test ;
+  rdfs:label "fail message" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:skipMessage a owl:DatatypeProperty;
+  rdfs:comment "This message is used in the output or report if the test is skipped because of a failed dependency." ;
+  rdfs:domain st:Test ;
+  rdfs:label "fail message" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:depends a owl:ObjectProperty;
+  rdfs:comment "Tests can depend on other tests. If one of the dependencies fail, the current test is skipped." ;
+  rdfs:domain st:Test ;
+  rdfs:range st:Test ;
+  rdfs:label "depends" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertEmpty a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:range xsd:boolean ;
+  rdfs:comment "The empty assertion is true if the SPARQL result set is empty (no row)." ;
+  rdfs:label "assert empty" ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertNotEmpty a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:range xsd:boolean ;
+  rdfs:comment "The not empty assertion is true if the SPARQL result set has at least one solution (row)." ;
+  rdfs:label "assert not empty" ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertEquals a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:comment "The equals assertion is true if the SPARQL result is equal to the assertion value." ;
+  rdfs:label "assert =" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertGreaterThan a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:comment "The greaterThan assertion is true if the SPARQL result is greater than the assertion value." ;
+  rdfs:label "assert >" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertGreaterThanOrEqual a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:comment "The greaterThanOrEqual assertion is true if the SPARQL result is greater than or equal the assertion value." ;
+  rdfs:label "assert >=" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertLessThan a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:comment "The lessThan assertion is true if the SPARQL result is less than the assertion value." ;
+  rdfs:label "assert <" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertLessThanOrEqual a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:comment "The lessThanOrEqual assertion is true if the SPARQL result is less than or equal the assertion value." ;
+  rdfs:label "assert <=" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+st:assertEqualXMLStructure a owl:DatatypeProperty;
+  rdfs:domain st:Test ;
+  rdfs:range rdf:XMLLiteral;
+  rdfs:comment "The equalXMLStructure assertion is true if the resulting XML (based on the SPARQL Query Results XML Format) is equal to the assertion value." ;
+  rdfs:label "assert XMLStructure" ;
+  dcterms:issued "2013-10-23"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+###
+# Example
+###
+
+ste:ExampleTestType a st:Test;
+  rdfs:label "test for resources without rdf:type" ;
+  st:queryString """SELECT ?s { ?s ?p ?o . OPTIONAL { ?s a ?type . } FILTER ( !bound(?type) ) . } LIMIT 1""" ;
+  st:assertEmpty true ;
+  st:failMessage "Some resources do not have an explizit rdf:type statement." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+ste:ExampleTestMoreThanOneLable a st:Test;
+  rdfs:label "test for resources with more than one rdf:label" ;
+  st:queryString """SELECT ?s count(?label) { ?s rdfs:label ?label . } GROUP BY ?s HAVING (count(?label) > 1) LIMIT 1""";
+  st:assertEmpty true ;
+  st:failMessage "At least one resource has more than one rdfs:label values." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+ste:ExampleTestMissingTranslation a st:Test;
+  rdfs:label "test for missing german translation of english values" ;
+  st:queryString """
+SELECT ?valueen { ?s ?p ?valueen . FILTER ( lang(?valueen) = "en" )
+OPTIONAL { ?s ?p ?valuede . FILTER ( lang(?valuede) = "de" ) }
+FILTER ( !bound(?valuede) ) } LIMIT 1
+""";
+  st:assertEmpty true ;
+  st:failMessage "At least one english literal has no german translation." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+ste:ExampleTestValueMarkup a st:Test;
+  rdfs:label "test for html tags in all literal values" ;
+  st:queryString """SELECT ?markup { ?s ?property ?markup . FILTER isLiteral(?markup) . FILTER regex( ?markup, "<[a-z /]+>") . } LIMIT 1""";
+  st:assertEmpty true ;
+  st:failMessage "At least one literal value uses HTML markup." ;
+  dcterms:issued "2013-10-24"^^xsd:date ;
+  dcterms:modified "2013-10-24"^^xsd:date ;
+  rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+  .
+
+
+
+###
+# Vocabulary description and documentation
+###
+
+<http://purl.org/net/sparqltests/> a owl:Ontology;
+    foaf:maker <http://sebastian.tramp.name>;
+    doap:maintainer <http://sebastian.tramp.name>;
+    vann:preferredNamespacePrefix "st";
+    vann:preferredNamespaceUri "http://purl.org/net/sparqltest/";
+    foaf:homepage <http://aksw.org/Projects/SparqlTests>;
+    #vann:example <...>;
+    #vann:changes <...>;
+    rdfs:label "SPARQL Tests Description Vocabulary";
+    dcterms:description "This is a simple and lightweight approach to provide a SPARQL query centered data test description framwork. ";
+    dcterms:issued "2013-10-23"^^xsd:date ;
+    dcterms:modified "2013-10-24"^^xsd:date ;
+    rdfs:isDefinedBy <http://purl.org/net/sparqltests/> ;
+    .
+
+<http://sebastian.tramp.name> a foaf:Person; foaf:name "Sebastian Tramp".
